@@ -86,6 +86,6 @@ const fetchUser = async (req) => {
   return items[0];
 };
 
-app.listen(port, () => {
+app.listen(process.env.PORT||80,console.log('deployed to port'  + process.env.PORT), () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
