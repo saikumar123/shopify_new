@@ -8,7 +8,7 @@ const app = express();
 const bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
 
-const port = 4000;
+const port = 8080;
 app.use(cors());
 
 const { endpoint, key, databaseId, containerId } = config;
