@@ -8,7 +8,7 @@ const app = express();
 const bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
 
-const port = 8080;
+const port = process.env.PORT;
 app.use(cors());
 
 const { endpoint, key, databaseId, containerId } = config;
@@ -86,6 +86,6 @@ const fetchUser = async (req) => {
   return items[0];
 };
 
-app.listen(process.env.PORT||80,console.log('deployed to port'  + process.env.PORT), () => {
+app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
