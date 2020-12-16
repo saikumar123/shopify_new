@@ -44,7 +44,7 @@ app.post("/api/signup", cors(), jsonParser, (req, res) => {
       res.status(201);
       res.send({
         payload:{
-          name:userObject.userName
+          name:req.body.email
         },
         msg: "User is successfully added",
       });
@@ -62,8 +62,6 @@ app.post("/api/signup", cors(), jsonParser, (req, res) => {
 
 const fetchUser = async (req) => {
   console.log(`Querying container: Items`);
-
-  // query to return all items
   const querySpec = {
     query: "SELECT * from c WHERE c.userEmail=@email",
     parameters: [
@@ -73,8 +71,6 @@ const fetchUser = async (req) => {
       },
     ],
   };
-
-  // read all items in the Items container
   const { resources: items } = await container.items
     .query(querySpec)
     .fetchAll();
