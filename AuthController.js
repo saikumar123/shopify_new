@@ -10,19 +10,41 @@ var config = require("./authConfig");
 var randToken = require("rand-token");
 
 var tokenList = {};
-router.post("/signup", function (req, res) {
+router.post("/signup", async function (req, res) {
   var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  const user = await User.fetchUser(req); 
+  if(user !== undefined) {
+    console.log(user);
+    console.log(user);
+    res.status(200);
+    res.send({
+      payload: {
+        name: user.userName,
+        email: user.userEmail,
+      },
+      msg: "User already exists. Please login",
+    });
+
+    return res;
+  } else {
+  console.log("User doesnt exist..", user);
   User.createUser(req, hashedPassword).then(
     (user) => {
       var token = jwt.sign({ id: user.userId }, config.secret, {
-        expiresIn: 86400,
+        expiresIn: config.tokenLife,
       });
-      const refreshToken = jwt.sign(user.userId, config.refreshTokenSecret, {
-        expiresIn: config.refreshTokenLife,
-      });
+      const refreshToken = jwt.sign(
+        { id: user.userId },
+        config.refreshTokenSecret,
+        {
+          expiresIn: config.refreshTokenLife,
+        }
+      );
       tokenList[refreshToken] = user.userId;
       res.cookie("token", token, { httpOnly: true });
-      res.status(200).send({
+      res.cookie("refreshToken", refreshToken, { httpOnly: true });
+      res.cookie("userId", user.userId, { httpOnly: true });
+      res.status(201).send({
         auth: true,
         token: "JWT " + token,
         refreshToken: refreshToken,
@@ -30,7 +52,7 @@ router.post("/signup", function (req, res) {
           userId: user.userId,
           userName: user.userName,
         },
-        msg: "SignUp Successful",
+        msg: "User is successfully added",
       });
     },
     (err) => {
@@ -40,6 +62,7 @@ router.post("/signup", function (req, res) {
           .send("There was a problem registering the user.");
     }
   );
+  }
 });
 
 router.post("/login", function (req, res) {
@@ -189,13 +212,14 @@ router.get("/fetch", function (req, res) {
         }
       },
       (err) => {
-        if (err)
-          return res
-            .status(500)
-            .send("Unknown error occurred.");
+        if (err) return res.status(500).send("Unknown error occurred.");
       }
     );
   }
 });
+
+const fetchUser = (req) => {
+
+}
 
 module.exports = router;

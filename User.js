@@ -13,6 +13,7 @@ const container = database.container(containerId);
 const createUser = async (req , hashedPassword) => {
   const newUser = {
     userId: uuid.v1(),
+    category:"user",
     userName: req.body.name,
     userEmail: req.body.email,
     userPassword: hashedPassword,
