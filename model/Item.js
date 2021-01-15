@@ -1,6 +1,5 @@
 const CosmosClient = require("@azure/cosmos").CosmosClient;
-const config = require("./cosmosConfig");
-const dbContext = require("./databaseContext");
+const config = require("../cosmosConfig");
 const uuid = require("uuid");
 
 const { endpoint, key, databaseId, containerId } = config;
@@ -55,16 +54,10 @@ const createItem = async (req) => {
 
   const fetchAllItems = async (req) => {
     console.log(`Querying container: Items`);
-    const querySpec = {
-      query: "SELECT * from c WHERE c.category=`product`",
-    };
+    const itemQuery = "SELECT * from c WHERE c.category='item'";
     const { resources: items } = await container.items
-      .query(querySpec)
+      .query(itemQuery)
       .fetchAll();
-  
-    items.forEach((item) => {
-      console.log(`${item.id}`);
-    });
   
     return items;
   };

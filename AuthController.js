@@ -28,40 +28,41 @@ router.post("/signup", async function (req, res) {
     return res;
   } else {
   console.log("User doesnt exist..", user);
-  User.createUser(req, hashedPassword).then(
-    (user) => {
-      var token = jwt.sign({ id: user.userId }, config.secret, {
+  const newUser = await User.createUser(req, hashedPassword)  
+  console.log("User created succesfully", newUser);
+   if (newUser) {
+      var token = jwt.sign({ id: newUser.userId }, config.secret, {
         expiresIn: config.tokenLife,
       });
       const refreshToken = jwt.sign(
-        { id: user.userId },
+        { id: newUser.userId },
         config.refreshTokenSecret,
         {
           expiresIn: config.refreshTokenLife,
         }
       );
-      tokenList[refreshToken] = user.userId;
+      tokenList[refreshToken] = newUser.userId;
       res.cookie("token", token, { httpOnly: true });
       res.cookie("refreshToken", refreshToken, { httpOnly: true });
-      res.cookie("userId", user.userId, { httpOnly: true });
-      res.status(201).send({
+      res.cookie("userId", newUser.userId, { httpOnly: true });
+      return res.status(201).send({
         auth: true,
         token: "JWT " + token,
         refreshToken: refreshToken,
         payload: {
-          userId: user.userId,
-          userName: user.userName,
+          userId: newUser.userId,
+          userName: newUser.userName,
         },
         msg: "User is successfully added",
       });
-    },
-    (err) => {
-      if (err)
+    } else {
+      
         return res
           .status(500)
           .send("There was a problem registering the user.");
+    
+
     }
-  );
   }
 });
 
