@@ -9,9 +9,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 // var jsonParser = bodyParser.json();
 
-var allowlist = ['http://localhost:3001']
+var allowlist = ['http://localhost:3000']
 var corsOptions = {
-  origin: 'http://localhost:3001',credentials:true
+  origin: 'http://localhost:3000',credentials:true
 }
 
 app.use('*', [cors(corsOptions), cookieParser()]);
