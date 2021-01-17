@@ -16,8 +16,10 @@ var corsOptions = {
 
 app.use('*', [cors(corsOptions), cookieParser()]);
 var AuthController = require('./AuthController');
-var ItemController = require('./ItemController')
+var UserController = require('./UserController');
+var ItemController = require('./ItemController');
 app.use('/api/auth', AuthController);
+app.use('/api/user', UserController);
 app.use('/api/item', ItemController);
 const port = process.env.PORT;
 

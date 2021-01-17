@@ -17,6 +17,7 @@ const createUser = async (req , hashedPassword) => {
     userName: req.body.name,
     userEmail: req.body.email,
     userPassword: hashedPassword,
+    accountId: req.body.accountId,
     userRole:req.body.role
   };
 
@@ -72,4 +73,26 @@ const fetchUserByUserId = async (userId) => {
   return items[0];
 };
 
-module.exports = {createUser, fetchUser, fetchUserByUserId};
+const fetchUserByAccountId = async (accountId) => {
+  console.log(`Querying container: Items`);
+  const querySpec = {
+    query: "SELECT * from c WHERE c.accountId=@accountId",
+    parameters: [
+      {
+        name: "@accountId",
+        value: accountId,
+      }
+    ],
+  };
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+
+  items.forEach((item) => {
+    console.log(`${item.id}`);
+  });
+
+  return items[0];
+};
+
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId};
