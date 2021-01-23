@@ -95,4 +95,49 @@ const fetchUserByAccountId = async (accountId) => {
   return items[0];
 };
 
-module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId};
+
+const fetchUserByAccountEmail = async (email) => {
+  console.log(`Querying container: Items`);
+  const querySpec = {
+    query: "SELECT * from c WHERE STARTSWITH(c.userEmail, @email) OR STARTSWITH(c.avatar, @email)",
+    parameters: [
+      {
+        name: "@email",
+        value: email,
+      }
+    ],
+  };
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+
+  items.forEach((item) => {
+    console.log(`${item.id}`);
+  });
+
+  return items;
+};
+
+const fetchUserByAccountAvatar = async (avatar) => {
+  console.log(`Querying container: Items`);
+  const querySpec = {
+    query: "SELECT * from c WHERE c.avatar=@avatar",
+    parameters: [
+      {
+        name: "@avatar",
+        value: avatar,
+      }
+    ],
+  };
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+
+  items.forEach((item) => {
+    console.log(`${item.id}`);
+  });
+
+  return items[0];
+};
+
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId, fetchUserByAccountEmail, fetchUserByAccountAvatar};

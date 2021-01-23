@@ -31,5 +31,30 @@ router.get("/fetch-account/:accountId", async function (req, res) {
     }
   });
 
+
+  router.get("/fetch-account-email-or-avatar/:emailOrAvatar", async function (req, res) {
+  
+    const fetchedUser = await UserModel.fetchUserByAccountEmail(req.params.emailOrAvatar);
+    if (fetchedUser !== undefined) {
+      console.log(fetchedUser);
+      res.status(200);
+      res.send({
+        payload: {
+          user: fetchedUser,
+        },
+        msg: "Successfully retrieved user with emailOrAvatar - "+req.params.emailOrAvatar,
+      });
+      return res;
+    } else {
+      console.log("No User exist.. with emailOrAvatar "+req.params.emailOrAvatar);
+      res.status(200).send({
+        payload: {
+          user: [],
+        },
+        msg: "No User found with emailOrAvatar "+req.params.emailOrAvatar,
+      });
+    }
+  });
+
 module.exports = router;
 
