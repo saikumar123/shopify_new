@@ -3,9 +3,9 @@ const config = require("./cosmosConfig");
 const dbContext = require("./databaseContext");
 const uuid = require("uuid");
 
-const { endpoint, key, databaseId, containerId } = config;
+const { endpoint,cosmosDBUrl, key, databaseId, containerId } = config;
 
-const client = new CosmosClient({ endpoint, key });
+const client = new CosmosClient({ cosmosDBUrl, key });
 
 const database = client.database(databaseId);
 const container = database.container(containerId);
