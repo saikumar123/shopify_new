@@ -56,5 +56,32 @@ router.get("/fetch-account/:accountId", async function (req, res) {
     }
   });
 
+  router.get("/fetch-account-by-avatar/:avatar", async function (req, res) {
+  
+    const fetchedUser = await UserModel.fetchUserByAccountAvatar(req.params.avatar);
+    if (fetchedUser !== undefined) {
+      console.log(fetchedUser);
+      res.status(200);
+      res.send({
+        payload: {
+          user: fetchedUser,
+        },
+        msg: "Successfully retrieved user with avatar - "+req.params.avatar,
+      });
+      return res;
+    } else {
+      console.log("No User exist.. with avatar "+req.params.avatar);
+      res.status(200).send({
+        payload: {
+          user: [],
+        },
+        msg: "No User found with avatar "+req.params.avatar,
+      });
+    }
+  });
+
+
+  
+
 module.exports = router;
 

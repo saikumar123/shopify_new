@@ -95,7 +95,6 @@ const fetchUserByAccountId = async (accountId) => {
   return items[0];
 };
 
-
 const fetchUserByAccountEmail = async (email) => {
   console.log(`Querying container: Items`);
   const querySpec = {
