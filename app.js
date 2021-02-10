@@ -8,20 +8,22 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 // var jsonParser = bodyParser.json();
-
+/*
 var allowlist = ['http://localhost:3000']
 var corsOptions = {
   origin: 'http://localhost:3000',credentials:true
-}
+} */
 
-app.use('*', [cors(corsOptions), cookieParser()]);
+//app.use('*', [cors(corsOptions), cookieParser()]);
+app.use(cors());
+
 var AuthController = require('./AuthController');
 var UserController = require('./UserController');
 var ItemController = require('./ItemController');
 app.use('/api/auth', AuthController);
 app.use('/api/user', UserController);
 app.use('/api/item', ItemController);
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 
 
@@ -133,6 +135,6 @@ const port = process.env.PORT;
 //   return items[0];
 // };
 
-app.listen(port || 3000, () => {
+app.listen(port || 8080, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

@@ -3,9 +3,18 @@ const config = require("./cosmosConfig");
 const dbContext = require("./databaseContext");
 const uuid = require("uuid");
 
-const { endpoint,cosmosDBUrl, key, databaseId, containerId } = config;
+const { endpoint,cosmooksDBUrl, key, databaseId, containerId } = config;
 
-const client = new CosmosClient({ cosmosDBUrl, key });
+const  cosmosDBUrlFromConfig = `${process.env.COSMOSDB_URL}`;
+/*
+console.log(cosmosDBUrl);
+if (cosmosDBUrl !== undefined && cosmosDBUrl !== 'undefined') {  
+  console.log('a')
+  cosmosDBUrlFromConfig = cosmosDBUrl ;
+} */
+console.log(cosmosDBUrlFromConfig);
+
+const client = new CosmosClient({endpoint, key });
 
 const database = client.database(databaseId);
 const container = database.container(containerId);
