@@ -15,7 +15,13 @@ var corsOptions = {
 } */
 
 //app.use('*', [cors(corsOptions), cookieParser()]);
-app.use(cors());
+//app.use(cors());
+
+var allowedList = ['http://sample.testmycoding.com','http://localhost:3000']
+var corsOptions = {
+  origin: allowedList
+}
+app.use('*', cors(corsOptions));
 
 var AuthController = require('./AuthController');
 var UserController = require('./UserController');
