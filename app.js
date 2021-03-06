@@ -26,8 +26,10 @@ app.use('*', cors(corsOptions));
 var AuthController = require('./AuthController');
 var UserController = require('./UserController');
 var ItemController = require('./ItemController');
+var TransactionController = require('./TransactionController');
 app.use('/api/auth', AuthController);
 app.use('/api/user', UserController);
+app.use('/api/txn', TransactionController);
 app.use('/api/item', ItemController);
 const port = process.env.PORT || 8080;
 

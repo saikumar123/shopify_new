@@ -80,8 +80,6 @@ router.get("/fetch-account/:accountId", async function (req, res) {
     }
   });
 
-
   
-
 module.exports = router;
 

@@ -24,6 +24,7 @@ const createUser = async (req , hashedPassword) => {
     userId: uuid.v1(),
     category:"user",
     userName: req.body.name,
+    avatar:req.body.name,
     userEmail: req.body.email,
     userPassword: hashedPassword,
     accountId: req.body.accountId,
@@ -126,26 +127,4 @@ const fetchUserByAccountEmail = async (email) => {
   return items;
 };
 
-const fetchUserByAccountAvatar = async (avatar) => {
-  console.log(`Querying container: Items`);
-  const querySpec = {
-    query: "SELECT * from c WHERE c.avatar=@avatar",
-    parameters: [
-      {
-        name: "@avatar",
-        value: avatar,
-      }
-    ],
-  };
-  const { resources: items } = await container.items
-    .query(querySpec)
-    .fetchAll();
-
-  items.forEach((item) => {
-    console.log(`${item.id}`);
-  });
-
-  return items[0];
-};
-
-module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId, fetchUserByAccountEmail, fetchUserByAccountAvatar};
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId, fetchUserByAccountEmail};

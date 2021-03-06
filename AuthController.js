@@ -219,8 +219,4 @@ router.get("/fetch", function (req, res) {
   }
 });
 
-const fetchUser = (req) => {
-
-}
-
 module.exports = router;
