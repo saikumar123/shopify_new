@@ -22,14 +22,13 @@ const fetchTransactionById = async (id) => {
   const { resources: items } = await container.items
     .query(querySpec)
     .fetchAll();
-
   return items[0];
 };
 
 const fetchAccountsByAvatar = async (avatar) => {
   console.log(`Querying container: Items`);
   const querySpec = {
-    query: "SELECT * from c WHERE c.avatar=@avatar AND c.category='transaction'",
+    query: "SELECT * from c WHERE c.avatar=@avatar AND c.type='TRANSACTION'",
     parameters: [
       {
         name: "@avatar",
@@ -46,7 +45,7 @@ const fetchAccountsByAvatar = async (avatar) => {
 
 const fetchAccountsByAvatarLite = async (avatar, offset, limit) => {
   const querySpec = {
-    query: "SELECT * from c WHERE c.avatar=@avatar AND c.category='transaction' ORDER BY c.transactionTimeStamp DESC OFFSET @offset LIMIT @limit",
+    query: "SELECT * from c WHERE c.avatar=@avatar AND c.type='TRANSACTION' ORDER BY c.transactionTimeStamp DESC OFFSET @offset LIMIT @limit",
     parameters: [
       {
         name: "@avatar",
@@ -71,27 +70,71 @@ const fetchAccountsByAvatarLite = async (avatar, offset, limit) => {
 
 
 const createTransaction = async (req,avatar) => {
-  const transaction = {
-    id: req.body.transactionHash,
+
+  const timeStamp = new Date();
+  const senderId = req.body.transactionHash + 'sender';
+  const receiverId =req.body.transactionHash + 'receiver';
+  const senderTransaction = {
+    id: senderId,
     description: "Transaction made by the sender",
-    category:"transaction",
+    type:'TRANSACTION',
+    category:req.body.lockAddress,
     receiver:req.body.unlockAddress,
     sender:req.body.lockAddress,
     avatar: avatar,
     accountId: req.body.lockAddress,
     amount: req.body.amount,
     lockId: req.body.lockId,
-    transactionTimeStamp: new Date(),
+    transactionTimeStamp: timeStamp,
     senderAvatar: req.body.senderAvatar,
-    recipientAvatar: req.body.recipientAvatar
+    recipientAvatar: req.body.recipientAvatar,
+    lockStatus: "LOCKED"
   };
 
-  const { resource: createdItem } = await container.items.create(transaction);
+  const recieverTransaction = {
+    id: receiverId,
+    description: "Transaction received by the receiver",
+    type:'TRANSACTION',
+    category:req.body.unlockAddress,
+    receiver:req.body.unlockAddress,
+    sender:req.body.lockAddress,
+    avatar: req.body.recipientAvatar,
+    accountId: req.body.unlockAddress,
+    amount: req.body.amount,
+    lockId: req.body.lockId,
+    transactionTimeStamp: timeStamp,
+    senderAvatar: req.body.senderAvatar,
+    recipientAvatar: req.body.recipientAvatar,
+    lockStatus: "UNLOCK"
+  };
+
+  const { resource: createdItemSender } = await container.items.create(senderTransaction);
 
   console.log(
-    `\r\nCreated new item: ${createdItem.id} - ${createdItem.description}\r\n`
+    `\r\nCreated new item: ${createdItemSender.id} - ${createdItemSender.description}\r\n`
   );
-  return createdItem;
+
+  const { resource: createdItemReceiver } = await container.items.create(recieverTransaction);
+
+
+  console.log(
+    `\r\nCreated new item: ${createdItemReceiver.id} - ${createdItemReceiver.description}\r\n`
+  );
+  return createdItemSender;
 };
 
-module.exports = {createTransaction, fetchTransactionById, fetchAccountsByAvatar, fetchAccountsByAvatarLite};
+
+const updateTransaction = async(txnHash,accountId,transaction) => {
+
+const { resource: updatedTransaction } = await container
+  .item(txnHash, accountId)
+  .replace(transaction);
+
+console.log(`Updated item: ${updatedTransaction.id} - ${updatedTransaction.description}`); 
+console.log(`Updated lockStatus to ${updatedTransaction.lockStatus}\r\n`);
+
+return updatedTransaction;
+
+}
+
+module.exports = {createTransaction, fetchTransactionById, fetchAccountsByAvatar, fetchAccountsByAvatarLite, updateTransaction};

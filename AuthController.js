@@ -19,8 +19,11 @@ router.post("/signup", async function (req, res) {
     res.status(200);
     res.send({
       payload: {
-        name: user.userName,
-        email: user.userEmail,
+        user:{
+        userName: user.userName,
+        avatar: user.userName,
+        email: user.userEmail
+        }
       },
       msg: "User already exists. Please login",
     });
@@ -49,9 +52,12 @@ router.post("/signup", async function (req, res) {
         auth: true,
         token: "JWT " + token,
         refreshToken: refreshToken,
-        payload: {
-          userId: newUser.userId,
-          userName: newUser.userName,
+        payload: { 
+          user : {
+                userId: newUser.userId,
+                userName: newUser.userName,
+                avatar: newUser.userName
+          }
         },
         msg: "User is successfully added",
       });
@@ -96,6 +102,7 @@ router.post("/login", function (req, res) {
                 payload: {
                   userId: user.userId,
                   userName: user.userName,
+                  avatar: newUser.userName
                 },
                 msg: "Login Successful",
               });

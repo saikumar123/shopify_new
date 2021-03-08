@@ -23,8 +23,8 @@ const createUser = async (req , hashedPassword) => {
   const newUser = {
     userId: uuid.v1(),
     category:"user",
-    userName: req.body.name,
-    avatar:req.body.name,
+    userName: req.body.username,
+    avatar:req.body.username,
     userEmail: req.body.email,
     userPassword: hashedPassword,
     accountId: req.body.accountId,
@@ -42,7 +42,7 @@ const createUser = async (req , hashedPassword) => {
 const fetchUser = async (req) => {
   console.log(`Querying container: Items`);
   const querySpec = {
-    query: "SELECT * from c WHERE c.userEmail=@email",
+    query: "SELECT * from c WHERE c.userEmail=@email and c.category='user'",
     parameters: [
       {
         name: "@email",
@@ -64,7 +64,7 @@ const fetchUser = async (req) => {
 const fetchUserByUserId = async (userId) => {
   console.log(`Querying container: Items`);
   const querySpec = {
-    query: "SELECT * from c WHERE c.userId=@userId",
+    query: "SELECT * from c WHERE c.userId=@userId and c.category='user'",
     parameters: [
       {
         name: "@userId",
@@ -86,7 +86,7 @@ const fetchUserByUserId = async (userId) => {
 const fetchUserByAccountId = async (accountId) => {
   console.log(`Querying container: Items`);
   const querySpec = {
-    query: "SELECT * from c WHERE c.accountId=@accountId",
+    query: "SELECT * from c WHERE c.accountId=@accountId and c.category='user'",
     parameters: [
       {
         name: "@accountId",
@@ -108,7 +108,7 @@ const fetchUserByAccountId = async (accountId) => {
 const fetchUserByAccountEmail = async (email) => {
   console.log(`Querying container: Items`);
   const querySpec = {
-    query: "SELECT * from c WHERE STARTSWITH(c.userEmail, @email) OR STARTSWITH(c.avatar, @email)",
+    query: "SELECT * from c WHERE STARTSWITH(c.userEmail, @email) OR STARTSWITH(c.avatar, @email) and c.category='user'",
     parameters: [
       {
         name: "@email",

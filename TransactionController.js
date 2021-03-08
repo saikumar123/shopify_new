@@ -20,7 +20,8 @@ router.get("/fetch-transactions-by-avatar/:avatar", async function (req, res) {
         timestamp: transaction.transactionTimeStamp,
         lockId: transaction.lockId,
         senderAvatar:transaction.senderAvatar,
-        recipientAvatar: transaction.recipientAvatar
+        recipientAvatar: transaction.recipientAvatar,
+        lockStatus:transaction.lockStatus
       };
     });
 
@@ -45,6 +46,106 @@ router.get("/fetch-transactions-by-avatar/:avatar", async function (req, res) {
   }
 });
 
+
+// fetch transaction by hash id
+router.get("/fetch-transactions-by-hash/:txnHash", async function (req, res) {
+
+  const senderTxnId=req.params.txnHash+'sender';
+  const transactionSender = await TxnModel.fetchTransactionById(senderTxnId);
+
+  const receiverTxnId=req.params.txnHash+'receiver';
+  const transactionReceiver = await TxnModel.fetchTransactionById(receiverTxnId);
+
+  let transactions = [];
+
+  transactions.push({
+    transactionHash: transactionSender.id,
+    lockAddress: transactionSender.sender,
+    unlockAddress: transactionSender.receiver,
+    amount: transactionSender.amount,
+    timestamp: transactionSender.transactionTimeStamp,
+    lockId: transactionSender.lockId,
+    senderAvatar:transactionSender.senderAvatar,
+    recipientAvatar: transactionSender.recipientAvatar,
+    lockStatus:transactionSender.lockStatus
+  });
+
+  transactions.push({
+    transactionHash: transactionReceiver.id,
+    lockAddress: transactionReceiver.sender,
+    unlockAddress: transactionReceiver.receiver,
+    amount: transactionReceiver.amount,
+    timestamp: transactionReceiver.transactionTimeStamp,
+    lockId: transactionReceiver.lockId,
+    senderAvatar:transactionReceiver.senderAvatar,
+    recipientAvatar: transactionReceiver.recipientAvatar,
+    lockStatus:transactionReceiver.lockStatus
+  });
+
+
+  if (transactions !== undefined) {
+     
+    res.status(200);
+    res.send({
+      payload: {
+        transactions: transactions,
+      },
+      msg:
+        "Successfully retrieved transactions with txnHash - " +
+        req.params.txnHash,
+    });
+    return res;
+  } else {
+    console.log("No Transactions exist for txnHash " + req.params.txnHash);
+    res.status(200).send({
+      payload: {
+        transactions: [],
+      },
+      msg: "No Transactions found for txnHash " + req.params.txnHash,
+    });
+  }
+});
+
+
+// update transaction by hash id, sender accountId and receiver accountId
+router.get("/update-transactions/sender/:senderId/receiver/:receiverId/hash/:txnHash/lockStatus/:lockStatus", async function (req, res) {
+
+  const senderTxnId=req.params.txnHash+'sender';
+  let transactionSender = await TxnModel.fetchTransactionById(senderTxnId);
+  if(transactionSender !== 'undefined') {
+  transactionSender.lockStatus=req.params.lockStatus;
+  transactionSender = await TxnModel.updateTransaction(senderTxnId,req.params.senderId, transactionSender);
+}
+
+  const receiverTxnId=req.params.txnHash+'receiver';
+  let transactionReceiver = await TxnModel.fetchTransactionById(receiverTxnId);
+  if(transactionReceiver !== 'undefined') {
+    transactionReceiver.lockStatus = req.params.lockStatus;
+    transactionReceiver = await TxnModel.updateTransaction(receiverTxnId,req.params.receiverId,transactionReceiver); 
+  }
+
+  if (transactionSender !== undefined && transactionReceiver!== 'undefined') {
+     
+    res.status(200);
+    res.send({
+      payload: {
+        transactionsUpdate: true,
+      },
+      msg:
+        "Successfully updated transactions with txnHash - " +
+        req.params.txnHash,
+    });
+    return res;
+  } else {
+    console.log("No Transactions exist for txnHash " + req.params.txnHash);
+    res.status(200).send({
+      payload: {
+        transactionsUpdate: false,
+      },
+      msg: "No Transactions found for txnHash and Hence not updated" + req.params.txnHash,
+    });
+  }
+});
 
 // fetch all transaction for a avatar-lite-weight
 // has offset and limits described
@@ -74,7 +175,8 @@ router.get("/fetch-transactions-by-avatar-lite", async function (req, res) {
         timestamp: transaction.transactionTimeStamp,
         lockId: transaction.lockId,
         senderAvatar:transaction.senderAvatar,
-        recipientAvatar: transaction.recipientAvatar
+        recipientAvatar: transaction.recipientAvatar,
+        lockStatus:transaction.lockStatus
       };
     });
 
@@ -112,13 +214,15 @@ router.post("/create-transaction/:avatar", function (req, res) {
             timestamp: transaction.transactionTimeStamp,
             lockId: transaction.lockId,
             senderAvatar:transaction.senderAvatar,
-            recipientAvatar: transaction.recipientAvatar
+            recipientAvatar: transaction.recipientAvatar,
+            lockStatus:transaction.lockStatus
           }] 
         },
       });
     },
     (err) => {
       if (err)
+      console.log(err);
         return res
           .status(500)
           .send("There was a problem creating the transaction.");
