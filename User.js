@@ -61,6 +61,8 @@ const fetchUser = async (req) => {
   return items[0];
 };
 
+
+
 const fetchUserByUserId = async (userId) => {
   console.log(`Querying container: Items`);
   const querySpec = {
@@ -105,6 +107,14 @@ const fetchUserByAccountId = async (accountId) => {
   return items[0];
 };
 
+const updateUserByAccountId = async (id, user) => {
+   const { resource: updatedUser } = await container
+      .item(id,'user')
+      .replace(user);    
+    console.log(`Updated item: ${updatedUser.timeStamp} - ${updatedUser.id}`);        
+    return updatedUser;
+};
+
 const fetchUserByAccountEmail = async (email) => {
   console.log(`Querying container: Items`);
   const querySpec = {
@@ -127,4 +137,4 @@ const fetchUserByAccountEmail = async (email) => {
   return items;
 };
 
-module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId, fetchUserByAccountEmail};
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail};

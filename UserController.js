@@ -6,6 +6,33 @@ router.use(bodyParser.json());
 const UserModel = require("./User");
 const itemConfig = require("./config/itemConfig")
 
+router.get("/update-account/:accountId", async function (req, res) {
+  
+  let fetchedUser = await UserModel.fetchUserByAccountId(req.params.accountId);
+  
+  if(fetchedUser !== 'undefined') {    
+    fetchedUser.lastClaimedTimeStamp=new Date();
+    fetchedUser = await UserModel.updateUserByAccountId(fetchedUser.id,fetchedUser);
+    console.log(fetchedUser);
+    res.status(200);
+    res.send({
+      payload: {
+        user: fetchedUser,
+      },
+      msg: "Updated user successfully with accountId - "+req.params.accountId,
+    });
+    return res;
+  } else {
+    console.log("No User exist.. with accountId "+req.params.accountId);
+    res.status(200).send({
+      payload: {
+        user: [],
+      },
+      msg: "No User found with accountId "+req.params.accountId,
+    });
+  }
+});
+
 
 router.get("/fetch-account/:accountId", async function (req, res) {
   

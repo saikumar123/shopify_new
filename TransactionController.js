@@ -124,7 +124,7 @@ router.get("/update-transactions/sender/:senderId/receiver/:receiverId/hash/:txn
     transactionReceiver = await TxnModel.updateTransaction(receiverTxnId,req.params.receiverId,transactionReceiver); 
   }
 
-  if (transactionSender !== undefined && transactionReceiver!== 'undefined') {
+  if (transactionSender !== undefined && transactionReceiver!== undefined) {
      
     res.status(200);
     res.send({
