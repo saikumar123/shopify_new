@@ -136,5 +136,29 @@ const fetchUserByAccountEmail = async (email) => {
 
   return items;
 };
+const fetchUserByUsername = async (username) => {
+  console.log(`Querying container: Items`);
+  console.log("username =",username)
+  const querySpec = {
+    query: "SELECT * from c WHERE c.userName=@username and c.category='user'",
+    parameters: [
+      {
+        name: "@username",
+        value: username,
+      }
+    ],
+  };
 
-module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail};
+  
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+
+  // items.forEach((item) => {
+    // console.log(`${item.id}`);
+  // });
+
+  return items[0];
+};
+
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail, fetchUserByUsername};

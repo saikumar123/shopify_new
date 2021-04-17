@@ -33,6 +33,29 @@ router.get("/update-account/:accountId", async function (req, res) {
   }
 });
 
+router.get("/fetch-user/:username", async function (req, res) {
+  console.log("username = ",req.params.username)
+  const fetchedUser = await UserModel.fetchUserByUsername(req.params.username);
+  if (fetchedUser !== undefined) {
+    console.log("fetchedUser = ",fetchedUser);
+    res.status(200);
+    res.send({
+      payload: {
+        user: fetchedUser,
+      },
+      msg: "Successfully retrieved user with userName - "+req.params.userName,
+    });
+    return res;
+  } else {
+    console.log("No User exist.. with userName "+req.params.userName);
+    res.status(200).send({
+      payload: {
+        user: [],
+      },
+      msg: "No User found with userName "+req.params.accountId,
+    });
+  }
+});
 
 router.get("/fetch-account/:accountId", async function (req, res) {
   

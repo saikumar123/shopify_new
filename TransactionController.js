@@ -202,6 +202,7 @@ router.get("/fetch-transactions-by-avatar-lite", async function (req, res) {
 });
 
 router.post("/create-transaction/:avatar", function (req, res) {
+  console.log("req.params.avatar = ",req.params.avatar)
   TxnModel.createTransaction(req, req.params.avatar).then(
     (transaction) => {
       return res.status(200).send({

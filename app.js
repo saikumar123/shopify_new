@@ -17,7 +17,7 @@ var corsOptions = {
 //app.use('*', [cors(corsOptions), cookieParser()]);
 //app.use(cors());
 
-var allowedList = ['http://sample.testmycoding.com','http://localhost:3000']
+var allowedList = ['http://sample.testmycoding.com','http://localhost:3000', 'http://localhost:3001']
 var corsOptions = {
   origin: allowedList
 }
