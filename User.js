@@ -137,4 +137,24 @@ const fetchUserByAccountEmail = async (email) => {
   return items;
 };
 
-module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail};
+const fetchUserByUsername = async (username) => {
+  console.log(`Querying container: Items`);
+  console.log("username =",username)
+  const querySpec = {
+    query: "SELECT * from c WHERE c.userName=@username and c.category='user'",
+    parameters: [
+      {
+        name: "@username",
+        value: username,
+      }
+    ],
+  };
+
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+
+  return items[0];
+};
+
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail, fetchUserByUsername};
