@@ -157,4 +157,24 @@ const fetchUserByUsername = async (username) => {
   return items[0];
 };
 
-module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail, fetchUserByUsername};
+const fetchAvatar = async (avatar) => {
+  console.log(`Querying container: Items`);
+  console.log("avatar =",avatar)
+  const querySpec = {
+    query: "SELECT * from c WHERE c.avatar=@avatar and c.category='user'",
+    parameters: [
+      {
+        name: "@avatar",
+        value: avatar,
+      }
+    ],
+  };
+
+  const { resources: items } = await container.items
+    .query(querySpec)
+    .fetchAll();
+
+  return items[0];
+};
+
+module.exports = {createUser, fetchUser, fetchUserByUserId,fetchUserByAccountId,updateUserByAccountId, fetchUserByAccountEmail, fetchUserByUsername, fetchAvatar};

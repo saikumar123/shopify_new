@@ -12,7 +12,7 @@ var randToken = require("rand-token");
 var tokenList = {};
 router.post("/signup", async function (req, res) {
   var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-  const user = await User.fetchUser(req); 
+  const user = await User.fetchAvatar(req.body.username); 
   if(user !== undefined) {
     console.log(user);
     console.log(user);
@@ -21,7 +21,7 @@ router.post("/signup", async function (req, res) {
       payload: {
         user:{
         userName: user.userName,
-        avatar: user.userName,
+        avatar: user.avatar,
         email: user.userEmail
         }
       },
@@ -102,7 +102,7 @@ router.post("/login", function (req, res) {
                 payload: {
                   userId: user.userId,
                   userName: user.userName,
-                  avatar: newUser.userName
+                  avatar: user.userName
                 },
                 msg: "Login Successful",
               });
