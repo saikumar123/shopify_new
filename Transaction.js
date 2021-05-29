@@ -74,6 +74,7 @@ const createTransaction = async (req,avatar) => {
   const timeStamp = new Date();
   const senderId = req.body.transactionHash + 'sender';
   const receiverId =req.body.transactionHash + 'receiver';
+
   const senderTransaction = {
     id: senderId,
     description: "Transaction made by the sender",
@@ -81,6 +82,7 @@ const createTransaction = async (req,avatar) => {
     category:req.body.lockAddress,
     receiver:req.body.unlockAddress,
     sender:req.body.lockAddress,
+    creditor: req.body.creditToAddress,
     avatar: avatar,
     accountId: req.body.lockAddress,
     amount: req.body.amount,
@@ -88,6 +90,7 @@ const createTransaction = async (req,avatar) => {
     transactionTimeStamp: timeStamp,
     senderAvatar: req.body.senderAvatar,
     recipientAvatar: req.body.recipientAvatar,
+    creditorAvatar: req.body.creditorAvatar,
     lockStatus: "LOCKED"
   };
 
@@ -98,6 +101,7 @@ const createTransaction = async (req,avatar) => {
     category:req.body.unlockAddress,
     receiver:req.body.unlockAddress,
     sender:req.body.lockAddress,
+    creditor: req.body.creditToAddress,
     avatar: req.body.recipientAvatar,
     accountId: req.body.unlockAddress,
     amount: req.body.amount,
@@ -105,6 +109,7 @@ const createTransaction = async (req,avatar) => {
     transactionTimeStamp: timeStamp,
     senderAvatar: req.body.senderAvatar,
     recipientAvatar: req.body.recipientAvatar,
+    creditorAvatar: req.body.creditorAvatar,
     lockStatus: "UNLOCK"
   };
 
@@ -120,6 +125,38 @@ const createTransaction = async (req,avatar) => {
   console.log(
     `\r\nCreated new item: ${createdItemReceiver.id} - ${createdItemReceiver.description}\r\n`
   );
+
+
+  if(req.body.creditToAddress) {
+    const creditId =req.body.transactionHash + 'creditor';
+
+  const creditTransaction = {
+    id: creditId,
+    description: "Transaction for by the creditor",
+    type:'TRANSACTION',
+    category:req.body.creditToAddress,
+    receiver:req.body.unlockAddress,
+    sender:req.body.lockAddress,
+    creditor: req.body.creditToAddress,
+    avatar: avatar,
+    accountId: req.body.lockAddress,
+    amount: req.body.amount,
+    lockId: req.body.lockId,
+    transactionTimeStamp: timeStamp,
+    senderAvatar: req.body.senderAvatar,
+    recipientAvatar: req.body.recipientAvatar,
+    creditorAvatar: req.body.creditorAvatar,
+    lockStatus: "CREDITED"
+  };
+
+  const { resource: createdItemCreditedTo } = await container.items.create(creditTransaction);
+
+
+  console.log(
+    `\r\nCreated new item: ${createdItemCreditedTo.id} - ${createdItemCreditedTo.description}\r\n`
+  );
+  }
+
   return createdItemSender;
 };
 

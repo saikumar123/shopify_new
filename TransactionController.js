@@ -16,11 +16,13 @@ router.get("/fetch-transactions-by-avatar/:avatar", async function (req, res) {
         transactionHash: transaction.id,
         lockAddress: transaction.sender,
         unlockAddress: transaction.receiver,
+        creditToAddress: transaction.creditor,
         amount: transaction.amount,
         timestamp: transaction.transactionTimeStamp,
         lockId: transaction.lockId,
         senderAvatar:transaction.senderAvatar,
         recipientAvatar: transaction.recipientAvatar,
+        creditorAvatar: transaction.creditorAvatar,
         lockStatus:transaction.lockStatus
       };
     });
@@ -62,11 +64,13 @@ router.get("/fetch-transactions-by-hash/:txnHash", async function (req, res) {
     transactionHash: transactionSender.id,
     lockAddress: transactionSender.sender,
     unlockAddress: transactionSender.receiver,
+    creditToAddress: transaction.creditor,
     amount: transactionSender.amount,
     timestamp: transactionSender.transactionTimeStamp,
     lockId: transactionSender.lockId,
     senderAvatar:transactionSender.senderAvatar,
     recipientAvatar: transactionSender.recipientAvatar,
+    creditorAvatar: transaction.creditorAvatar,
     lockStatus:transactionSender.lockStatus
   });
 
@@ -74,11 +78,13 @@ router.get("/fetch-transactions-by-hash/:txnHash", async function (req, res) {
     transactionHash: transactionReceiver.id,
     lockAddress: transactionReceiver.sender,
     unlockAddress: transactionReceiver.receiver,
+    creditToAddress: transaction.creditor,
     amount: transactionReceiver.amount,
     timestamp: transactionReceiver.transactionTimeStamp,
     lockId: transactionReceiver.lockId,
     senderAvatar:transactionReceiver.senderAvatar,
     recipientAvatar: transactionReceiver.recipientAvatar,
+    creditorAvatar: transaction.creditorAvatar,
     lockStatus:transactionReceiver.lockStatus
   });
 
@@ -171,11 +177,13 @@ router.get("/fetch-transactions-by-avatar-lite", async function (req, res) {
         transactionHash: transaction.id,
         lockAddress: transaction.sender,
         unlockAddress: transaction.receiver,
+        creditToAddress: transaction.creditor,
         amount: transaction.amount,
         timestamp: transaction.transactionTimeStamp,
         lockId: transaction.lockId,
         senderAvatar:transaction.senderAvatar,
         recipientAvatar: transaction.recipientAvatar,
+        creditorAvatar: transaction.creditorAvatar,
         lockStatus:transaction.lockStatus
       };
     });
@@ -210,11 +218,13 @@ router.post("/create-transaction/:avatar", function (req, res) {
             transactionHash: transaction.id,
             lockAddress: transaction.sender,
             unlockAddress: transaction.receiver,
+            creditToAddress: transaction.creditor,
             amount: transaction.amount,
             timestamp: transaction.transactionTimeStamp,
             lockId: transaction.lockId,
             senderAvatar:transaction.senderAvatar,
             recipientAvatar: transaction.recipientAvatar,
+            creditorAvatar: transaction.creditorAvatar,
             lockStatus:transaction.lockStatus
           }] 
         },
