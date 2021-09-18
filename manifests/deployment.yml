@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: nodebackend 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodebackend
+  template:
+    metadata:
+      labels:
+        app: nodebackend 
+    spec:
+      containers:
+        - name: nodebackend 
+          image: shopifywebk8registry.azurecr.io/nodebackend
+          ports:
+          - containerPort: 8080
