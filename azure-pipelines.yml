@@ -3,8 +3,6 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-  branch:
-    develop
   tags:
     include:
       - azure_build
