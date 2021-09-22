@@ -1,7 +1,7 @@
 trigger:
   tags:
     include:
-      - azure_build
+      - azure_build.*
 
 variables:
 
