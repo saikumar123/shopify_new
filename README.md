@@ -17,8 +17,5 @@
 
 
 ## Pipeline pushed only with tags.:
-    git add .
-    git commit -m "first commit"
-    git push
     git tag azure_build                   # creates tag locally     
     git push origin azure_build           # pushes tag to remote
