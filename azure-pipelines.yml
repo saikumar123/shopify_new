@@ -1,4 +1,7 @@
 trigger:
+  branches:
+    include: develop
+    exclude: master
   tags:
     include:
       - azure_build.*
