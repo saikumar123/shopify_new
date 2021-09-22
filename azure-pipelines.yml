@@ -3,7 +3,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+  tags:
+    include:
+      - new_image
 
 resources:
 - repo: self
@@ -15,7 +17,7 @@ variables:
   imageRepository: 'nodebackend'
   containerRegistry: 'shopifywebk8registry.azurecr.io'
   dockerfilePath: '**/Dockerfile'
-  tag: 
+  tag: '61'
   imagePullSecret: 'shopifywebk8registry3126eeff-auth'
 
   # Agent VM image name
