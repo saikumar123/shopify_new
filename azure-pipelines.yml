@@ -5,9 +5,6 @@
 trigger:
   - develop
 
-resources:
-- repo: self
-
 variables:
 
   # Container registry service connection established during pipeline creation
