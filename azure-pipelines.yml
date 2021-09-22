@@ -5,7 +5,7 @@
 trigger:
   tags:
     include:
-      - tag.*
+      - image.*
 
 variables:
 
