@@ -1,5 +1,7 @@
 trigger:
-  - develop
+  tags:
+    include:
+      - push
 
 variables:
 
