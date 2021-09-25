@@ -25,9 +25,9 @@ spec:
                  key: COSMOSDBURL
           resources:
             limits:
-              cpu: 1000m
+              memory: 1024Mi
             requests:
-              cpu: 1000m
+              memory: 1024Mi
 
 ---
 apiVersion: autoscaling/v2beta1
@@ -44,5 +44,5 @@ spec:
   metrics:
   - type: Resource
     resource:
-      name: cpu
+      name: memory
       targetAverageUtilization: 70
