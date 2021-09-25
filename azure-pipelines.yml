@@ -46,7 +46,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'staging.staging'
+    environment: 'backend.staging'
     strategy:
       runOnce:
         deploy:
