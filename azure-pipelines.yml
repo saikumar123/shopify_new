@@ -6,7 +6,7 @@ trigger:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '55514cce-b729-48bb-a60d-e1716563dc72'
+  dockerRegistryServiceConnection: '1b80cc90-e7a3-41a4-9533-f500c48a240a'
   imageRepository: 'nodebackend'
   containerRegistry: 'shopifywebk8registry.azurecr.io'
   dockerfilePath: '**/Dockerfile'
