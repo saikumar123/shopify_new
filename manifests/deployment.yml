@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend 
-          image: shopifywebk8registry.azurecr.io/nodebackend
+          image: shopifywebk8registry.azurecr.io/node_backend
           ports:
           - containerPort: 8080
           env:
