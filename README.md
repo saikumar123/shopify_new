@@ -10,12 +10,6 @@
     --namespace=production \
     --from-literal=COSMOSDBURL="https://shopify-cosmos.documents.azure.com:443/"
 
-## How to create variable env for frontend:
-2 For staging:
-    kubectl create secret generic cosmodbconnection \
-    --namespace=staging \
-    --from-literal=COSMOSDBURL="https://shopify-cosmos.documents.azure.com:443/"
-
 ## How to push with tag:
     git tag v1.0.0                    # creates tag locally
     git push origin v1.0.0            # pushes tag to remote
