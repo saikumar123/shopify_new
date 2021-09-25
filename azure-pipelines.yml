@@ -1,7 +1,5 @@
 trigger:
-  tags:
-    include:
-      - imagetag.*
+- master
 
 variables:
 
