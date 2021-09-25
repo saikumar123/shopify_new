@@ -46,7 +46,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'saikumar123shopifynew.staging'
+    environment: 'staging.staging'
     strategy:
       runOnce:
         deploy:
